@@ -1,0 +1,92 @@
+{% extends 'base.html'  %}
+{% block content %}
+    <section class="hero is-info">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    Como está o clima?
+                </h1>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="field has-addons">
+                            <div class="control">
+                                {{ form.location }}
+                            </div>
+                            <div class="control">
+                                <button type="submit" class="button is-info">
+                                    Adicionar cidade
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% if form.location.errors %}
+            <br />
+            <div class="container">
+                <div class="notification is-danger">
+                    <a href="{% url 'index' %}">
+                        <button class="delete"></button>
+                    </a>
+                    <p>{{ form.location.errors }}</p>
+                </div>
+            </div>
+        {% endif %}
+    </section>
+
+
+
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-one-fifth is-three-fifths">
+                    {% for location in weather_data %}
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image is-50x50">
+                                    <img src="https://openweathermap.org/img/w/{{ location.icon }}.png" alt="Image">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <span class="title">{{ location.city }}</span>
+                                        <br>
+                                        <span class="subtitle">{{ location.temperature }}° C</span>
+                                        <br> {{ location.description }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="media-right">
+                                <a href="{% url 'delete' location.pk %}">
+                                    <button class="delete is-medium"></button>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+              <strong>Made</strong> by <a href="https://github.com/svhenrique">Silvio Henrique</a>. <a href="https://github.com/svhenrique">The source code</a> is licensed
+              <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+            </p>
+          </div>
+    </footer>
+{% endblock %}
