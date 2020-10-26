@@ -12,10 +12,8 @@ API_key = ''  # put a key of a weather API from openweathermap.org
 
 class WeatherView(FormView):
 
-    # C - city | CS - city, state | CSC - cidade, state, country
+    # CSC - city, state, country
     urls = {
-        'C': 'https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=' + API_key,
-        'CS': 'https://api.openweathermap.org/data/2.5/weather?q={},{}&units=metric&appid=' + API_key,
         'CSC': 'https://api.openweathermap.org/data/2.5/weather?q={},{},{}&units=metric&appid=' + API_key
     }
 
@@ -36,14 +34,7 @@ class WeatherView(FormView):
             city = location.city
             state = location.state
             country = location.country
-
-            # if the request will use, besides the city, state or state and country,
-            if location.have_state():
-                if location.have_country():
-                    r = requests.get(self.urls['CSC'].format(city, state, country)).json()
-                r = requests.get(self.urls['CS'].format(city, state)).json()
-            else:
-                r = requests.get(self.urls['C'].format(city)).json()
+            r = requests.get(self.urls['CSC'].format(city, state, country)).json()
 
             weather_city = {
                 'city': location.city,
@@ -63,23 +54,40 @@ class WeatherView(FormView):
 
         def not_blank(places):
             """
-            Não permitir entradas que deixam a entrada
-            da cidade, estado ou país como ''.
+            Do not allow inputs of city, state and county like ''.
             """
             for place in places:
                 if place == '':
                     return False
             return True
 
+        locations = Location.objects.all()
         form = FacadeForm(request.POST)
 
         if form.is_valid():
 
-            location = form.cleaned_data['location']
+            location = form.cleaned_data['location'].lower()
             location = location.split(',')
 
             if not_blank(location):
+
                 location = Location(None, *location)
+
+                for location_obj in locations:
+
+                    citys = [location_obj.city, location.city]
+                    states = [location_obj.state, location.state]
+                    countrys = [location_obj.country, location.country]
+
+                    # erase void strings in values
+                    citys = [citys[0].replace(' ', ''), citys[1].replace(' ', '')]
+                    states = [states[0].replace(' ', ''), states[1].replace(' ', '')]
+                    countrys = [countrys[0].replace(' ', ''), countrys[1].replace(' ', '')]
+
+                    # if the location sought alredy exist in Location
+                    if citys[0] == citys[1] and states[0] == states[1] and countrys[0] == countrys[1]:
+                        return self.form_invalid(form, message="Lugar procurado já pertence a lista de climas exibida.")
+
                 location.save()
                 return self.form_valid(form)
 
@@ -90,8 +98,8 @@ class WeatherView(FormView):
         messages.success(self.request, "Local adicionado com sucesso.")
         return super(WeatherView, self).form_valid(form)
 
-    def form_invalid(self, form):
-        messages.error(self.request, "Erro ao adicionar local.")
+    def form_invalid(self, form, message="Erro ao adicionar local."):
+        messages.error(self.request, message)
         return super(WeatherView, self).form_invalid(form)
 
 
