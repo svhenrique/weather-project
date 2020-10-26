@@ -14,7 +14,7 @@ class WeatherView(FormView):
 
     # CSC - city, state, country
     urls = {
-        'CSC': 'https://api.openweathermap.org/data/2.5/weather?q={},{},{}&units=metric&appid=' + API_key
+        'CSC': 'https://api.openweathermap.org/data/2.5/weather?q={},{},{}&units=metric&lang=pt&appid=' + API_key
     }
 
     template_name = 'weather.html'
@@ -71,13 +71,13 @@ class WeatherView(FormView):
 
             if not_blank(location):
 
-                location = Location(None, *location)
+                location_obj = Location(None, *location)
 
-                for location_obj in locations:
+                for obj in locations:
 
-                    citys = [location_obj.city, location.city]
-                    states = [location_obj.state, location.state]
-                    countrys = [location_obj.country, location.country]
+                    citys = [obj.city, location_obj.city]
+                    states = [obj.state, location_obj.state]
+                    countrys = [obj.country, location_obj.country]
 
                     # erase void strings in values
                     citys = [citys[0].replace(' ', ''), citys[1].replace(' ', '')]
@@ -86,9 +86,14 @@ class WeatherView(FormView):
 
                     # if the location sought alredy exist in Location
                     if citys[0] == citys[1] and states[0] == states[1] and countrys[0] == countrys[1]:
-                        return self.form_invalid(form, message="Lugar procurado já pertence a lista de climas exibida.")
+                        return self.form_invalid(form, message="Lugar procurado já pertence a lista de lugares.")
 
-                location.save()
+                    # if local searched doesn't exist
+                    if requests.get(self.urls['CSC'].format(location[0], location[1], location[2])).json()['cod'] != 200:
+                        return self.form_invalid(form, message="Local inválido.")
+
+
+                location_obj.save()
                 return self.form_valid(form)
 
         return self.form_invalid(form)
