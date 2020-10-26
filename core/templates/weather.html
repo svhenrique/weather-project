@@ -41,6 +41,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <br />
+                <div class="container">
+                    <div class="notification is-danger">
+                        <a class="delete" href="{% url 'index' %}">
+                        </a>
+                        <p>{{ message }}</p>
+                    </div>
+
+                </div>
+            {% endfor %}
+        {% endif %}
     </section>
 
 
