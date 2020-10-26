@@ -95,7 +95,6 @@ class WeatherView(FormView):
 
     def form_valid(self, form):
         form = FacadeForm()
-        messages.success(self.request, "Local adicionado com sucesso.")
         return super(WeatherView, self).form_valid(form)
 
     def form_invalid(self, form, message="Erro ao adicionar local."):
