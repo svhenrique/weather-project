@@ -73,6 +73,10 @@ class WeatherView(FormView):
 
                 location_obj = Location(None, *location)
 
+                # if local searched doesn't exist
+                if requests.get(self.urls['CSC'].format(location[0], location[1], location[2])).json()['cod'] != 200:
+                    return self.form_invalid(form, message="Local inválido.")
+
                 for obj in locations:
 
                     citys = [obj.city, location_obj.city]
@@ -87,11 +91,6 @@ class WeatherView(FormView):
                     # if the location sought alredy exist in Location
                     if citys[0] == citys[1] and states[0] == states[1] and countrys[0] == countrys[1]:
                         return self.form_invalid(form, message="Lugar procurado já pertence a lista de lugares.")
-
-                    # if local searched doesn't exist
-                    if requests.get(self.urls['CSC'].format(location[0], location[1], location[2])).json()['cod'] != 200:
-                        return self.form_invalid(form, message="Local inválido.")
-
 
                 location_obj.save()
                 return self.form_valid(form)
