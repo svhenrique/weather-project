@@ -8,7 +8,7 @@ from django.contrib import messages
 import requests
 
 
-API_key = '8f6f5609468ff4a8281eb49c77e9fde4'  # put a key of a weather API from openweathermap.org
+API_key = ''  # put a key of a weather API from openweathermap.org
 
 class WeatherView(FormView):
 
