@@ -14,6 +14,9 @@ def validate_location(container):
     if '' in locations:
         raise ValidationError('Por favor, utilize a separação por vírgulas corretamente.')
 
+    if len(locations) != 3:
+        raise ValidationError('Por favor, preencha utlizando o nome da cidade, estado e país, respectivamente.')
+
     if len(locations) > 3:
         raise ValidationError('Por favor, coloque a entrada de forma correta. Informações de como adicionar a cidade estão na aba "ajuda".')
 
