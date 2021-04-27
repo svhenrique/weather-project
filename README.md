@@ -4,7 +4,7 @@
 
 ## Sobre
 
-Uma aplicação feita em Django que usa a API do site  ![OpenWeather](https://openweathermap.org/api) para analisar as informações do clima de uma cidade
+Uma aplicação feita em Django que usa a API do site  [OpenWeather](https://openweathermap.org/api) para analisar as informações do clima de uma cidade
 passada pelo usuário.
 
 ## Como utilizar
