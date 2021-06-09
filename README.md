@@ -14,7 +14,7 @@ passada pelo usuário.
 Para clonar o repositório é possível baixa-lo completamente do github e extrair em uma pasta de projeto ou utilizar o comando:
 
 ```bash
-git clone https://github.com/svhenrique/projext-web-project.git
+git clone https://github.com/svhenrique/weather-project.git
 ```
 
 Para utilizar o comando anterior é necessário ter o Git instalado no computador.
