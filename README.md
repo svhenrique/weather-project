@@ -29,6 +29,14 @@ Passo a passo da instalação da linguagem pode ser encontrado aqui:
 
 - https://wiki.python.org/moin/BeginnersGuide/Download
 
+É necessário, também, a instalação do banco de dados PostgreSQL: 
+
+- https://www.postgresql.org/download/
+
+e a instalação das dependências do pacote psycopg:
+
+- https://www.psycopg.org/docs/install.html
+
 É recomendável que se use um ambiente virtual para utilização da aplicação. Mas antes, é preciso baixar a biblioteca virtualenv e para fazer isso, basta executar o comando:
 
 
