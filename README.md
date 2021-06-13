@@ -55,6 +55,15 @@ Após criar o ambiente virtual, se você estiver no prompt de comando (shell, te
 ```bash
 venv/bin/activate
 ```
+
+## Instalando dependências
+
+Para instalar dependências, basta usar o comando:
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Como utilizar
 
 Para acessar as informações de clima de uma cidade basta informar, da seguinte forma, **cidade, estado, país** respectivamente na entrada de busca e clicar em "Adicionar Cidade".
